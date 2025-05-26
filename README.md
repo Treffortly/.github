@@ -1,4 +1,4 @@
-Treffortly: The AI-Powered Gamified Productivity Ecosystem
+## Treffortly: The AI-Powered Gamified Productivity Ecosystem
 
 🌟 Project Name:
 
