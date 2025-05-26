@@ -1,141 +1,119 @@
-```markdown
-# Treffortly – AI-Powered, Gamified Productivity Ecosystem
+# Treffortly – AI-Powered Gamified Productivity Ecosystem
 
-> **Status:** Pre-alpha • 2025 Roadmap published  
-> **Demo URL:** coming soon | **Docs:** `/docs/*`
-
----
-
-## ✨ Overview
-Treffortly unifies task- & habit-management, real-time collaboration, and AI coaching into a single, reward-driven workspace.  
-XP, levels, and badges turn daily work into playable quests, while modular AI services provide smart tagging, summarisation, forecasting, and XR visualisation.
-
-| Core Pillars | Highlights |
-|--------------|------------|
-| **Gamification** | XP economy, adaptive rewards (RL tuned), global + team leaderboards |
-| **AI-First UX** | Llama-3 chat assistant, Whisper voice capture, Pegasus daily briefs, Graph ML buddy-matching |
-| **Real-Time** | Socket.io live updates, Redis leaderboard ZSETs, optimistic UI |
-| **Polyglot Clients** | Web (Next 15), Android (Jetpack Compose), Desktop (Qt 6), CLI daemon (`treffd`) |
-| **Integrations** | GitHub, Spotify, Slack, Google Calendar, custom webhooks |
-| **XR Ready** | React-Three-Fiber scene renders depth-aware XP orbs on XReal / Rokid via WebXR + MiDas |
+> Next-gen task, habit & team-productivity platform that turns real-world work into an engaging XP-based game.  
+> Built with **Next.js 15 + Tailwind v4** on the front-end and a **Node + GraphQL** cloud back-end—augmented by AI micro-services, a native desktop daemon, and mobile / XR companions.
 
 ---
 
-## 🗂️ Repo Structure (Monorepo)
+## ✨ Key Capabilities
+
+| Domain | Feature Highlights |
+|--------|--------------------|
+| **Productivity Core** | Tasks / subtasks · recurring habits & streaks · smart calendar · Pomodoro timer |
+| **Gamification** | XP, levels & badges · adaptive reward curve (RL-tuned) · real-time leaderboards |
+| **AI Layer** | ⮡ LLM chat assistant (task entry, coaching)<br>⮡ Zero-shot task auto-tagging & categorisation<br>⮡ Daily brief & summarisation<br>⮡ Time-series burn-out forecasting<br>⮡ XR progress overlay (depth-aware) |
+| **Integrations** | GitHub commits, Spotify “now playing”, Slack / WhatsApp notifications, Google Calendar sync |
+| **Collaboration** | Team projects, live chat, role-based access, shared docs |
+| **Customisation** | Drag-and-drop dashboard editor · theme & accent picker (default **Indigo**) |
+| **Platforms** | Web (RSC) · PWA · Android (Compose) · Desktop Qt/CLI daemon · XR overlay |
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer | Tech |
+|-------|------|
+| Front-end | **Next.js 15** · React 18 · TailwindCSS v4 · Framer Motion · Zustand · Apollo/URQL |
+| Back-end | **Node.js** · Apollo Server · Prisma ORM · PostgreSQL (Neon) · Redis + Socket.io |
+| Auth & Billing | Auth0 · Stripe |
+| AI Services | Local Ollama LLM side-car · Python FastAPI for inference · Java Rules-Engine (gRPC) |
+| Native | **Android** (Jetpack Compose, Kotlin) · **C++** Qt desktop & CLI daemon |
+| DevOps | Vercel deploy · GitHub Actions CI/CD · Docker compose for micro-services |
+
+---
+
+## 🗺️ Monorepo Layout (Turborepo)
 
 ```
 
 apps/
-web/            # Next.js 15 frontend
-api/            # Node 18 + Apollo GraphQL gateway
-admin/          # Internal admin console
-android/        # Kotlin Jetpack-Compose client
-desktop/        # Qt 6 C++ desktop
-daemon/         # C++20 CLI sync agent
+web/           -> Next.js 15 front-end
+admin/         -> Internal admin panel
+api/           -> Node + Apollo GraphQL
+android/       -> Jetpack-Compose client
+desktop/       -> Qt desktop client
 packages/
-ui/             # Tailwind v4 + shadcn-based component kit
-utils/          # Shared TS helpers & hooks
-proto/          # gRPC definitions (Java + C++)
-
-```
-
----
-
-## 🛠 Tech Stack (Core)
-
-| Layer                 | Tech                                         |
-|-----------------------|----------------------------------------------|
-| API Gateway           | Node 18 · Apollo Server v4 · GraphQL Subgraph|
-| Database              | Neon Postgres · Prisma ORM · Timescale ext   |
-| Real-Time             | Socket.io · Redis (Upstash)                  |
-| Auth                  | Auth0 (JWT, RBAC)                            |
-| AI Services           | FastAPI sidecar (Pegasus, Whisper, SAM, etc) |
-| Payments              | Stripe Billing + Webhooks                    |
-| Front-End             | Next.js 15 · Tailwind v4 · Framer Motion      |
-| CI/CD                 | GitHub Actions → Vercel / Railway            |
-
----
-
-## 🤖 AI Model → Feature Map
-
-| Task Type | Model | Feature |
-|-----------|-------|---------|
-| Chat / Gen | **Llama-3 / Mistral** | Conversational assistant, SMART task creation |
-| Summarise  | **Pegasus-X**        | Daily/weekly progress brief |
-| Translation| **SeamlessM4T**      | Live multilingual UI & comments |
-| Zero-Shot CLS| **Qwen-VL-Max**   | Automatic task tagging |
-| Table QA   | **TAPEX**            | Natural-language analytics queries |
-| ASR        | **Whisper-v3**       | Voice-to-task on mobile/PWA |
-| TTS        | **Bark v2**          | Focus-mode audio coach |
-| Image→Text | **BLIP-2**           | Photo-to-task ingestion |
-| Depth/XR   | **SAM + MiDas**      | XR gamified XP orbs (WebXR) |
-| TimeSeries | **DLinear**          | Burn-out forecasting |
-| Graph ML   | **Graphormer**       | Accountability buddy suggestions |
-| RL Reward  | Custom RL agent      | Adaptive XP economy |
-
----
-
-## 🔌 Integrations
-
-- **GitHub** – auto-pull requests → tasks, commit XP multiplier  
-- **Google Calendar** – bi-directional event sync  
-- **Spotify** – current track widget → focus timer playlists  
-- **Slack / WhatsApp** – notification bridge  
-- **Custom Webhooks** – `/integrations/webhooks` wizard
-
----
-
-## 🏗 Architecture at a Glance
-
-```
-
-+---------------+        WebSockets        +---------------------+
-\|  Next.js Web  | ───────────────────────▶ |  Redis Leaderboard   |
-+-------▲-------+                         +----------▲----------+
-\| GraphQL                                   |
-▼                                          REST
-+----------------------+          gRPC         +------------------+
-\|  Apollo Gateway (TS) | ───────────────▶      |  Java Rules Svc  |
-+----------▲-----------+                       +------------------+
-|HTTP                                 |
-\|                                     |
-▼                                     ▼
-+-----------------+      AI RPC/REST     +-----------------+
-\|    FastAPI AI   |  ─────────────────▶  | C++ Native CLI  |
-+-----------------+                     +-----------------+
+ui/            -> shadcn-derived component kit
+types/         -> Shared TypeScript types
+utils/         -> Re-usable helpers & hooks
+services/
+rules-java/    -> Spring Boot XP Rules Engine
+ai-python/     -> FastAPI inference side-car
+daemon-cpp/    -> File-watch & CLI sync tool
 
 ````
 
 ---
 
-## 🚦 Quick Start (Dev)
+## 🔌 AI Model-to-Feature Map
+
+| HF Task | Model Suggestion | Treffortly Module |
+|---------|------------------|--------------------|
+| Text-Generation (chat) | Llama 3 / Mistral | Conversational assistant, SMART-task rewrite |
+| Summarisation | Pegasus-X | Daily brief & weekly digest |
+| Translation | SeamlessM4T | Real-time UI/content localisation |
+| Zero-shot Classification | Qwen-VL | Auto-tag / colour-code incoming tasks |
+| Table QA | TAPEX | “Ask your data” analytics panel |
+| ASR | Whisper.v3 | Voice-to-task capture |
+| TTS | Bark v2 | Hands-free focus mode |
+| Image → Text | BLIP-2 | Photo-to-todo extraction |
+| XR Depth / Segmentation | **SAM + MiDaS** | **XR gamification overlay** (XReal / Rokid) |
+| Time-Series Forecast | DLinear | Burn-out & workload forecasting |
+| Graph ML | Graphormer | Social accountability recommendations |
+
+---
+
+## 🔒 Authentication Flow
+
+1. **Auth0 Universal Login** → returns JWT  
+2. JWT validated in GraphQL context → user in `ctx.user`  
+3. RBAC roles (`user`, `pro`, `admin`) enforced at resolver level  
+
+---
+
+## ⚡ Real-Time Layer
+
+* Socket.io channels: `tasks`, `leaderboard`, `ai`
+* Redis Pub/Sub for multi-instance fan-out
+* Optimistic UI via TanStack Query cache updates
+
+---
+
+## 🛠️ Local Dev
 
 ```bash
-# Monorepo root
 pnpm i
-pnpm nx run-many -t dev -p api,web
-# GraphQL at http://localhost:4000/graphql
-# Web at http://localhost:3000
+pnpm turbo run dev   # spins up web + api + ui kit
+docker compose up    # optional – redis, postgres, ollama
 ````
 
----
-
-## 📅 Roadmap (90-Day MVP)
-
-| Week  | Milestone                             |
-| ----- | ------------------------------------- |
-| 1-2   | Repo scaffold, Auth0, Prisma schema   |
-| 3-4   | Task & Habit CRUD, XP logic, basic UI |
-| 5-6   | Socket.io real-time + Leaderboard     |
-| 7-8   | AI Assistant (LLM) & Smart Tagging    |
-| 9-10  | GitHub & Calendar integrations        |
-| 11-12 | Stripe Billing, CI/CD, public demo    |
+Environment variables (see `.env.example`) include `DATABASE_URL`, `AUTH0_*`, `STRIPE_*`, `REDIS_URL`.
 
 ---
 
-## License
+## 🚀 Production Deploy
 
-MIT © 2025 Wesley van der Kraan and contributors
+* **Vercel**: `apps/web` + `apps/api` (serverless)
+* **Railway / Fly**: Redis + Java & Python micro-services
+* **GitHub Actions**: lint → test → build → deploy green
+
+---
+
+## 📜 License
+
+Apache-2.0 © 2025 Wesley van der Kraan / Treffortly Contributors
 
 ```
-```
+
+> Replace model names or services as you refine your implementation.  
+> PRs, issues, and feature ideas welcome!
