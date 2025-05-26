@@ -1,7 +1,7 @@
 # Treffortly – AI-Powered Gamified Productivity Ecosystem
 
 > Productivity turned into an XP-driven game.  
-> **Web (Next.js 15 + Tailwind v4) · Node + GraphQL API · Android & Desktop companions · AI micro-services**
+> **Web (Next.js 15 + Tailwind v3) · Node + GraphQL API · Android & Desktop companions · AI micro-services**
 
 ---
 
@@ -9,7 +9,7 @@
 
 | Repo | Visibility | Purpose | Tech |
 |------|------------|---------|------|
-| **`webapp-client`** | Private | Main web UI (dashboard, tasks, calendar, analytics) | Next.js 15 · React · Tailwind v4 · Apollo/URQL |
+| **`webapp-client`** | Private | Main web UI (dashboard, tasks, calendar, analytics) | Next.js 15 · React · Tailwind v3 · Apollo/URQL |
 | **`webapp-api`** | Private | GraphQL back-end & WebSocket server | Node.js · Apollo Server · Prisma · PostgreSQL (Neon) |
 | **`mobile-app`** | Private | Native Android client | Kotlin · Jetpack Compose · Apollo Kotlin |
 | **`desktop-app`** | Private | Cross-platform desktop client | C++20 · Qt 6 · gRPC/GraphQL |
